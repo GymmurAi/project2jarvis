@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project2Jarvis - Agent Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            border: 1px solid #0f3460;
+            box-shadow: 0 0 20px rgba(15, 52, 96, 0.5);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .memory-widget {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #00dbde;
+            box-shadow: 0 0 15px rgba(0, 219, 222, 0.3);
+        }
+
+        .memory-widget h2 {
+            color: #00dbde;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .memory-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #fc00ff;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #00dbde;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .health-bar {
+            width: 100%;
+            height: 20px;
+            background: #0a0a0a;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            width: 28%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .agent-card {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 219, 222, 0.2);
+            border-color: #00dbde;
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .agent-emoji {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+
+        .agent-name {
+            color: #fc00ff;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .agent-role {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .agent-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: rgba(0, 219, 222, 0.2);
+            color: #00dbde;
+            border: 1px solid #00dbde;
+        }
+
+        .status-idle {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+        }
+
+        .weather-widget {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #fc00ff;
+            box-shadow: 0 0 15px rgba(252, 0, 255, 0.3);
+        }
+
+        .weather-widget h2 {
+            color: #fc00ff;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .weather-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .weather-item {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .weather-value {
+            color: #00dbde;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .jarvis-quote {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid #00dbde;
+            text-align: center;
+            font-style: italic;
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(0, 219, 222, 0.2);
+        }
+
+        .jarvis-attribution {
+            color: #fc00ff;
+            margin-top: 15px;
+            font-size: 1rem;
+            font-style: normal;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1 class="neon-text">🤖 Project2Jarvis Agent Dashboard</h1>
+            <p>Real-time monitoring of AI agency system | Built with OpenCode</p>
+        </div>
+
+        <div class="memory-widget">
+            <h2 class="neon-text">🧠 Memory Health</h2>
+            <div class="memory-stats">
+                <div class="stat">
+                    <div class="stat-label">MEMORY.md Lines</div>
+                    <div class="stat-value">56</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Health Score</div>
+                    <div class="stat-value">28/100</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value" style="color: #00ff00;">EXCELLENT</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Threshold</div>
+                    <div class="stat-value">200 lines</div>
+                </div>
+            </div>
+            <div class="health-bar">
+                <div class="health-fill"></div>
+            </div>
+            <p style="margin-top: 10px; color: #a0a0a0;">Memory is healthy - no summarization needed</p>
+        </div>
+
+        <div class="weather-widget">
+            <h2 class="neon-text">🌤️ Current Weather (Wolverhampton, UK)</h2>
+            <div class="weather-info">
+                <div class="weather-item">
+                    <div>Condition</div>
+                    <div class="weather-value">☀️ Sunny</div>
+                </div>
+                <div class="weather-item">
+                    <div>Temperature</div>
+                    <div class="weather-value">12°C</div>
+                </div>
+                <div class="weather-item">
+                    <div>Feels Like</div>
+                    <div class="weather-value">10°C</div>
+                </div>
+                <div class="weather-item">
+                    <div>Humidity</div>
+                    <div class="weather-value">50%</div>
+                </div>
+                <div class="weather-item">
+                    <div>Wind</div>
+                    <div class="weather-value">NE 24 km/h</div>
+                </div>
+                <div class="weather-item">
+                    <div>Pressure</div>
+                    <div class="weather-value">1026 hPa</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="color: #fc00ff; margin-bottom: 20px; font-size: 2rem;" class="neon-text">🤖 Agent Status</h2>
+        <div class="agents-grid">
+            <!-- Council Agents -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">🎯</div>
+                    <div class="agent-name">council-orchestrator</div>
+                </div>
+                <div class="agent-role">Coordinates council reviews and synthesizes feedback</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">🏗️</div>
+                    <div class="agent-name">council-system-architect</div>
+                </div>
+                <div class="agent-role">System architecture design and review</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">📐</div>
+                    <div class="agent-name">council-architect</div>
+                </div>
+                <div class="agent-role">Architecture & design review</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">🔒</div>
+                    <div class="agent-name">council-security</div>
+                </div>
+                <div class="agent-role">Security vulnerability assessment</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">⚡</div>
+                    <div class="agent-name">council-performance</div>
+                </div>
+                <div class="agent-role">Performance optimization review</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">✅</div>
+                    <div class="agent-name">council-quality</div>
+                </div>
+                <div class="agent-role">Code quality & best practices</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">📚</div>
+                    <div class="agent-name">council-docs</div>
+                </div>
+                <div class="agent-role">Documentation review</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <!-- Autonomous Agents -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">🔨</div>
+                    <div class="agent-name">builder</div>
+                </div>
+                <div class="agent-role">Autonomous feature implementation (FULL ACCESS)</div>
+                <span class="agent-status status-active">Active</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">🔍</div>
+                    <div class="agent-name">researcher</div>
+                </div>
+                <div class="agent-role">Autonomous investigation & documentation (FULL ACCESS)</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-emoji">🧹</div>
+                    <div class="agent-name">maintainer</div>
+                </div>
+                <div class="agent-role">Autonomous system maintenance (FULL ACCESS)</div>
+                <span class="agent-status status-idle">Idle</span>
+            </div>
+        </div>
+
+        <div class="jarvis-quote">
+            "Sir, the system is operational. All agents are standing by. The weather in Wolverhampton is quite pleasant—12 degrees and sunny. Shall we proceed with the daily tasks? I've already optimized the memory and prepared the dashboard. Your wish is my command."
+            <div class="jarvis-attribution">— Jarvis, AI Assistant | Project2Jarvis System</div>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for health bar on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const healthFill = document.querySelector('.health-fill');
+            healthFill.style.width = '0%';
+            setTimeout(() => {
+                healthFill.style.width = '28%';
+            }, 100);
+
+            // Add subtle pulse to active agent
+            const activeCard = document.querySelector('.status-active');
+            if (activeCard) {
+                setInterval(() => {
+                    activeCard.parentElement.style.boxShadow = activeCard.parentElement.style.boxShadow ? '' : '0 0 20px rgba(0, 219, 222, 0.5)';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
