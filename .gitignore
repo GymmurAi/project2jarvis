@@ -1,0 +1,22 @@
+# Sensitive
+*.env
+credentials.json
+*.pem
+*.key
+
+# Obsidian
+.obsidian/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
