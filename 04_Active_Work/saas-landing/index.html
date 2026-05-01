@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Project2Jarvis - Autonomous AI agents with council reviews, 3-layer memory, and full system access for modern development teams.">
+    <meta name="theme-color" content="#0EA5E9">
+    <title>Project2Jarvis — Autonomous AI Agency for Modern Development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom fonts + base */
+        body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        /* Skip link */
+        .skip-to-main { position: absolute; top: -100%; left: 1rem; z-index: 100; padding: 0.75rem 1.5rem; background: #0EA5E9; color: white; border-radius: 0.5rem; font-weight: 600; text-decoration: none; transition: top 150ms ease; }
+        .skip-to-main:focus { top: 1rem; }
+        /* Focus visible */
+        *:focus-visible { outline: 3px solid #38BDF8; outline-offset: 2px; border-radius: 0.25rem; }
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+        /* Fade in animation */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeInUp 300ms ease forwards; opacity: 0; }
+        .delay-1 { animation-delay: 50ms; }
+        .delay-2 { animation-delay: 100ms; }
+        .delay-3 { animation-delay: 150ms; }
+        .delay-4 { animation-delay: 200ms; }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#0F172A] min-h-screen overflow-x-hidden">
+    <!-- Skip to Main -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#E2E8F0]" role="banner">
+        <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+            <nav class="flex items-center justify-between min-h-[64px] gap-6" role="navigation" aria-label="Main navigation">
+                <a href="/" class="flex items-center gap-2 text-xl font-extrabold text-[#0F172A] no-underline min-h-[44px] flex items-center" aria-label="Project2Jarvis home">
+                    <svg class="w-8 h-8 text-[#0EA5E9]" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="32" height="32" rx="8" fill="currentColor"/>
+                        <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Project2Jarvis</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-6" role="list">
+                    <a href="#features" class="flex items-center min-h-[44px] text-[#475569] font-semibold no-underline hover:text-[#0EA5E9] transition-colors duration-150" role="listitem">Features</a>
+                    <a href="#pricing" class="flex items-center min-h-[44px] text-[#475569] font-semibold no-underline hover:text-[#0EA5E9] transition-colors duration-150" role="listitem">Pricing</a>
+                    <a href="#testimonials" class="flex items-center min-h-[44px] text-[#475569] font-semibold no-underline hover:text-[#0EA5E9] transition-colors duration-150" role="listitem">Testimonials</a>
+                    <a href="#docs" class="flex items-center min-h-[44px] text-[#475569] font-semibold no-underline hover:text-[#0EA5E9] transition-colors duration-150" role="listitem">Docs</a>
+                </div>
+
+                <div class="flex gap-4 items-center">
+                    <a href="#login" class="hidden md:flex items-center min-h-[44px] text-[#475569] font-semibold no-underline hover:text-[#0EA5E9] transition-colors duration-150" aria-label="Log in">Log in</a>
+                    <a href="#get-started" class="inline-flex items-center justify-center min-h-[44px] px-6 py-3 bg-[#F97316] text-white font-semibold rounded-lg no-underline hover:bg-[#EA580C] transition-all duration-200 cursor-pointer" aria-label="Get started">Get Started</a>
+                </div>
+
+                <button class="md:hidden flex items-center justify-center w-[44px] h-[44px] bg-none border-none cursor-pointer text-[#0F172A]" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMobileMenu()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+                </button>
+            </nav>
+
+            <!-- Mobile Menu -->
+            <div class="hidden md:hidden bg-white border-b border-[#E2E8F0] px-4 py-4" id="mobile-menu" aria-hidden="true">
+                <a href="#features" class="block py-3 text-[#475569] font-semibold no-underline min-h-[44px] flex items-center">Features</a>
+                <a href="#pricing" class="block py-3 text-[#475569] font-semibold no-underline min-h-[44px] flex items-center">Pricing</a>
+                <a href="#testimonials" class="block py-3 text-[#475569] font-semibold no-underline min-h-[44px] flex items-center">Testimonials</a>
+                <a href="#docs" class="block py-3 text-[#475569] font-semibold no-underline min-h-[44px] flex items-center">Docs</a>
+                <a href="#login" class="block py-3 text-[#475569] font-semibold no-underline min-h-[44px] flex items-center">Log in</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="py-16 md:py-20 bg-gradient-to-b from-[#F8FAFC] to-white" aria-labelledby="hero-title">
+            <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+                <div class="flex flex-col gap-12 items-center">
+                    <div class="text-center max-w-2xl animate-in">
+                        <div class="mb-6">
+                            <span class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#047857] bg-[#D1FAE5] rounded-full" style="letter-spacing:0.05em;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:4px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                Now in Public Beta
+                            </span>
+                        </div>
+                        <h1 id="hero-title" class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] mb-6 bg-gradient-to-br from-[#0F172A] to-[#0EA5E9] bg-clip-text text-transparent">
+                            Autonomous AI Agents for Modern Development
+                        </h1>
+                        <p class="text-lg text-[#475569] mb-8 leading-relaxed">
+                            Build, research, and maintain software with a multi-agent AI system. Council reviews, 3-layer memory, and full autonomy — all in one platform.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="#get-started" class="inline-flex items-center justify-center gap-2 min-h-[52px] px-8 py-4 bg-[#F97316] text-white font-semibold text-lg rounded-lg no-underline hover:bg-[#EA580C] hover:shadow-lg transition-all duration-200 cursor-pointer" aria-label="Start building for free">
+                                Start Building Free
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </a>
+                            <a href="#demo" class="inline-flex items-center justify-center gap-2 min-h-[52px] px-8 py-4 bg-white text-[#0F172A] font-semibold text-lg rounded-lg border-2 border-[#E2E8F0] no-underline hover:bg-[#F8FAFC] hover:border-[#38BDF8] transition-all duration-200 cursor-pointer" aria-label="Watch demo">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                Watch Demo
+                            </a>
+                        </div>
+                        <p class="mt-6 text-sm text-[#94A3B8]">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:4px" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Free tier includes 100 agent tasks/month. No credit card required.
+                        </p>
+                    </div>
+
+                    <div class="w-full max-w-2xl md:max-w-3xl animate-in delay-2">
+                        <div class="w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#E0F2FE] shadow-xl">
+                            <div class="w-full h-full flex items-center justify-center text-[#0EA5E9] font-semibold text-xl">
+                                [Dashboard Preview Image]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof -->
+        <section class="py-12 md:py-16" aria-label="Trusted by innovative teams">
+            <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+                <p class="text-center text-sm mb-8 text-[#94A3B8] font-semibold uppercase tracking-[0.1em]">
+                    Trusted by innovative teams worldwide
+                </p>
+                <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+                    <div class="h-10 flex items-center" aria-label="TechCorp">
+                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-full w-auto text-[#94A3B8]">
+                            <rect x="8" y="8" width="24" height="24" rx="6" fill="currentColor"/>
+                            <path d="M44 14h24M44 20h16M44 26h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="h-10 flex items-center" aria-label="DevStack">
+                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-full w-auto text-[#94A3B8]">
+                            <circle cx="20" cy="20" r="12" fill="currentColor"/>
+                            <circle cx="32" cy="20" r="12" fill="currentColor" opacity="0.6"/>
+                            <circle cx="44" cy="20" r="12" fill="currentColor" opacity="0.3"/>
+                            <path d="M60 14h24M60 20h16M60 26h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="h-10 flex items-center" aria-label="CodeFlow">
+                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-full w-auto text-[#94A3B8]">
+                            <path d="M8 12L16 20L8 28M24 28L32 20L24 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M44 14h24M44 20h16M44 26h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-16 md:py-20 bg-white" id="testimonials" aria-labelledby="testimonials-title">
+            <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+                <h2 id="testimonials-title" class="text-3xl font-bold text-center mb-4">Loved by Developers</h2>
+                <p class="text-lg text-[#475569] text-center max-w-2xl mx-auto mb-12">See what teams are saying about our autonomous agent system.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-1">
+                        <div class="flex gap-1 mb-4 text-[#F59E0B]" aria-label="5 out of 5 stars">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="text-base leading-relaxed text-[#475569] mb-4">
+                            "The council review system caught security issues we would have missed. It's like having a senior architect on every PR."
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9]" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-[#0F172A]">Sarah Chen</div>
+                                <div class="text-xs text-[#94A3B8]">CTO, TechCorp</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-2">
+                        <div class="flex gap-1 mb-4 text-[#F59E0B]" aria-label="5 out of 5 stars">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="text-base leading-relaxed text-[#475569] mb-4">
+                            "We shipped our MVP 3x faster using the Builder agent. The 3-layer memory means it remembers our architecture."
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9]" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-[#0F172A]">Marcus Johnson</div>
+                                <div class="text-xs text-[#94A3B8]">Founder, DevStack</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-3">
+                        <div class="flex gap-1 mb-4 text-[#F59E0B]" aria-label="5 out of 5 stars">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="text-base leading-relaxed text-[#475569] mb-4">
+                            "The maintainer agent keeps our codebase clean. Our dependencies are fresh and dead code is gone."
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9]" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-[#0F172A]">Elena Rodriguez</div>
+                                <div class="text-xs text-[#94A3B8]">Lead Dev, CodeFlow</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features / Bento Grid -->
+        <section class="py-16 md:py-20 bg-[#F8FAFC]" id="features" aria-labelledby="features-title">
+            <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+                <h2 id="features-title" class="text-3xl font-bold text-center mb-4">Everything You Need to Ship Faster</h2>
+                <p class="text-lg text-[#475569] text-center max-w-2xl mx-auto mb-12">A complete AI agency system with specialized agents, collaborative reviews, and persistent memory.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-1">
+                        <div class="w-12 h-12 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9] mb-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Multi-Agent System</h3>
+                        <p class="text-sm leading-relaxed text-[#475569]">Builder, Researcher, and Maintainer agents with full system access. Each specialized for their domain.</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-2">
+                        <div class="w-12 h-12 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9] mb-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Council Reviews</h3>
+                        <p class="text-sm leading-relaxed text-[#475569]">Security, performance, quality, and architecture reviews via specialized council members.</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-3">
+                        <div class="w-12 h-12 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9] mb-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">3-Layer Memory</h3>
+                        <p class="text-sm leading-relaxed text-[#475569]">Session, working, and permanent memory layers. Your agents remember across sessions.</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-4">
+                        <div class="w-12 h-12 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9] mb-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">MCP Integration</h3>
+                        <p class="text-sm leading-relaxed text-[#475569]">Extensible via Model Context Protocol. Connect GitHub, databases, and custom tools.</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-4">
+                        <div class="w-12 h-12 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9] mb-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Secure by Default</h3>
+                        <p class="text-sm leading-relaxed text-[#475569]">Council agents are read-only. API keys in Windows Credential Manager. Git-versioned.</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 border border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 animate-in delay-5">
+                        <div class="w-12 h-12 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0EA5E9] mb-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" aria-hidden="true">
+                                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">OpenCode Native</h3>
+                        <p class="text-sm leading-relaxed text-[#475569]">Built on OpenCode's native features. No custom frameworks. Simple, markdown-based.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="py-16 md:py-20" id="pricing" aria-labelledby="pricing-title">
+            <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+                <h2 id="pricing-title" class="text-3xl font-bold text-center mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-lg text-[#475569] text-center max-w-2xl mx-auto mb-12">Start free, scale as you grow. All plans include council reviews.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                    <div class="bg-white rounded-2xl p-8 border-2 border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 relative">
+                        <h3 class="text-xl font-semibold mb-2">Starter</h3>
+                        <p class="text-sm text-[#94A3B8] mb-6">For individuals exploring AI agency workflows.</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-[#0F172A] leading-none">$0</span>
+                            <span class="text-sm text-[#94A3B8]">/month</span>
+                        </div>
+                        <ul class="list-none flex flex-col gap-3 mb-8">
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                100 agent tasks/month
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                1 concurrent task
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Community support
+                            </li>
+                        </ul>
+                        <a href="#get-started" class="inline-flex items-center justify-center w-full min-h-[44px] px-6 py-3 bg-white text-[#0F172A] font-semibold rounded-lg border-2 border-[#0EA5E9] no-underline hover:bg-[#E0F2FE] transition-all duration-200 cursor-pointer">Get Started</a>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 border-2 border-[#0EA5E9] shadow-xl relative -translate-y-1 transition-all duration-200 cursor-pointer hover:shadow-xl hover:-translate-y-2">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#0EA5E9] text-white px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" style="letter-spacing:0.05em;">RECOMMENDED</div>
+                        <h3 class="text-xl font-semibold mb-2">Professional</h3>
+                        <p class="text-sm text-[#94A3B8] mb-6">For teams shipping production software.</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-[#0F172A] leading-none">$49</span>
+                            <span class="text-sm text-[#94A3B8]">/month</span>
+                        </div>
+                        <ul class="list-none flex flex-col gap-3 mb-8">
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Unlimited agent tasks
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                5 concurrent tasks
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Council reviews (all members)
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Priority support
+                            </li>
+                        </ul>
+                        <a href="#get-started" class="inline-flex items-center justify-center w-full min-h-[44px] px-6 py-3 bg-[#F97316] text-white font-semibold rounded-lg no-underline hover:bg-[#EA580C] hover:shadow-lg transition-all duration-200 cursor-pointer">Start Free Trial</a>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 border-2 border-[#E2E8F0] transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold mb-2">Enterprise</h3>
+                        <p class="text-sm text-[#94A3B8] mb-6">For organizations with advanced needs.</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-[#0F172A] leading-none">$149</span>
+                            <span class="text-sm text-[#94A3B8]">/month</span>
+                        </div>
+                        <ul class="list-none flex flex-col gap-3 mb-8">
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Everything in Professional
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Custom MCP servers
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                SSO & team management
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-[#475569]">
+                                <svg class="w-5 h-5 text-[#10B981] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Dedicated account manager
+                            </li>
+                        </ul>
+                        <a href="#contact" class="inline-flex items-center justify-center w-full min-h-[44px] px-6 py-3 bg-white text-[#0F172A] font-semibold rounded-lg border-2 border-[#E2E8F0] no-underline hover:bg-[#F8FAFC] hover:border-[#0EA5E9] transition-all duration-200 cursor-pointer">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0F172A] text-white/70 py-16" role="contentinfo">
+        <div class="container mx-auto max-w-[1400px] px-4 md:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="max-w-80">
+                    <div class="flex items-center gap-2 text-xl font-extrabold text-white mb-4">
+                        <svg class="w-8 h-8 text-[#0EA5E9]" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect width="32" height="32" rx="8" fill="currentColor"/>
+                            <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Project2Jarvis</span>
+                    </div>
+                    <p class="text-sm leading-relaxed text-white/60 mb-6">Autonomous AI agents for modern development. Build, research, and maintain with confidence.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex items-center justify-center w-[44px] h-[44px] rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-all duration-150 cursor-pointer" aria-label="GitHub">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.385.599.111.793.261.793.577v2.234c0 .319-.192.694-.801.576-4.765-1.589-8.199-6.086-8.199-11.386 0-6.627 5.373-12 12-12z"/></svg>
+                        </a>
+                        <a href="#" class="flex items-center justify-center w-[44px] h-[44px] rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-all duration-150 cursor-pointer" aria-label="Twitter">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.837L1.078 2.25h7.34l5.021 6.408L18.244 2.25z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4" style="letter-spacing:0.05em;">Product</h4>
+                    <ul class="list-none flex flex-col gap-2">
+                        <li><a href="#features" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Features</a></li>
+                        <li><a href="#pricing" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Pricing</a></li>
+                        <li><a href="#docs" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4" style="letter-spacing:0.05em;">Company</h4>
+                    <ul class="list-none flex flex-col gap-2">
+                        <li><a href="#about" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">About</a></li>
+                        <li><a href="#careers" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Careers</a></li>
+                        <li><a href="#contact" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4" style="letter-spacing:0.05em;">Legal</h4>
+                    <ul class="list-none flex flex-col gap-2">
+                        <li><a href="#privacy" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Privacy Policy</a></li>
+                        <li><a href="#terms" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Terms of Service</a></li>
+                        <li><a href="#security" class="text-sm text-white/60 no-underline hover:text-white transition-colors duration-150 cursor-pointer min-h-[44px] flex items-center">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row gap-4 items-center justify-between text-center md:text-left">
+                <p class="text-xs">&copy; 2026 Project2Jarvis. All rights reserved.</p>
+                <div class="flex gap-4 text-xs">
+                    <a href="#privacy" class="text-white/60 hover:text-white cursor-pointer">Privacy</a>
+                    <a href="#terms" class="text-white/60 hover:text-white cursor-pointer">Terms</a>
+                    <a href="#cookies" class="text-white/60 hover:text-white cursor-pointer">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.querySelector('button[aria-label="Toggle menu"]');
+            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', !isExpanded);
+            menu.classList.toggle('hidden');
+            menu.setAttribute('aria-hidden', isExpanded);
+        }
+    </script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 ---
 description: Autonomous builder agent with full system access to implement features and make changes without asking permission
 mode: primary
-model: anthropic/claude-sonnet-4-5
 temperature: 0.3
 permission:
   read: allow
@@ -21,11 +20,16 @@ permission:
 ## Memory Protocol
 
 ### Session Start (always do first)
+**Layer 2 - Working Memory:**
 1. Read `MEMORY.md` - working memory with project context and active tasks
 2. Read `AGENTS.md` - project rules and agent roster
-3. Read `03_Knowledge_Base/decisions-log.md` - recent architecture decisions
-4. Read `03_Knowledge_Base/lessons-learned.md` - avoid past mistakes
-5. Check `04_Active_Work/` for current task folders
+3. Read `01_Agents/builder.md` - my agent-specific memory
+
+**Layer 3 - Permanent Memory:**
+4. Read `03_Knowledge_Base/decisions-log.md` - architecture decisions (ADRs)
+5. Read `03_Knowledge_Base/lessons-learned.md` - accumulated insights
+6. Check `04_Active_Work/` for recent session logs (last 3 sessions)
+7. Read `00_Meta/ARCHITECTURE.md` - system architecture blueprint
 
 ### During Task
 1. Follow workflows in `02_Workflows/` (task-lifecycle.md)

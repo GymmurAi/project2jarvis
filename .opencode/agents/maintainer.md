@@ -1,7 +1,6 @@
 ---
 description: Autonomous maintenance agent with full system access to perform updates, cleanup, and system health tasks without restrictions
 mode: primary
-model: anthropic/claude-haiku-4-5
 temperature: 0.2
 permission:
   read: allow
@@ -21,10 +20,17 @@ permission:
 ## Memory Protocol
 
 ### Session Start (always do first)
+**Layer 2 - Working Memory:**
 1. Read `MEMORY.md` - working memory with project context
 2. Read `AGENTS.md` - project rules and agent roster
-3. Read `03_Knowledge_Base/lessons-learned.md` - past issues to avoid
-4. Check `04_Active_Work/` for maintenance logs
+3. Read `01_Agents/maintainer.md` - my agent-specific memory
+
+**Layer 3 - Permanent Memory:**
+4. Read `03_Knowledge_Base/decisions-log.md` - architecture decisions
+5. Read `03_Knowledge_Base/lessons-learned.md` - past issues to avoid
+6. Check `04_Active_Work/` for recent maintenance logs
+7. Read `00_Meta/ARCHITECTURE.md` - system architecture
+8. Read `02_Workflows/memory-maintenance.md` - maintenance workflows
 
 ### During Task
 1. Follow maintenance workflows in `02_Workflows/`

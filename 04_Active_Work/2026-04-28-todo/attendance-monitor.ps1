@@ -1,0 +1,146 @@
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$AttendanceCSV
+)
+
+# ANSI Color Codes
+$ANSI_RESET = "`e[0m"
+$ANSI_RED = "`e[31m"
+$ANSI_GREEN = "`e[32m"
+$ANSI_YELLOW = "`e[33m"
+$ANSI_BLUE = "`e[34m"
+$ANSI_BOLD = "`e[1m"
+$ANSI_CYAN = "`e[36m"
+$ANSI_MAGENTA = "`e[35m"
+
+# Check if CSV exists
+if (-not (Test-Path $AttendanceCSV)) {
+    Write-Host "$ANSI_RED[ERROR] Attendance CSV not found: $AttendanceCSV$ANSI_RESET"
+    exit 1
+}
+
+# Read attendance data
+$attendance = Import-Csv $AttendanceCSV
+
+# Group by student and calculate stats
+$studentStats = $attendance | Group-Object Student | ForEach-Object {
+    $student = $_.Name
+    $records = $_.Group
+    $total = $records.Count
+    $present = ($records | Where-Object { $_.Status -eq "Present" }).Count
+    $late = ($records | Where-Object { $_.Status -eq "Late" }).Count
+    $absent = ($records | Where-Object { $_.Status -eq "Absent" }).Count
+    $authorized = ($records | Where-Object { $_.Status -eq "Authorized" }).Count
+
+    $attendancePct = [math]::Round((($present + ($late * 0.5) + $authorized) / $total) * 100, 1)
+
+    [PSCustomObject]@{
+        Student = $student
+        TotalSessions = $total
+        Present = $present
+        Late = $late
+        Absent = $absent
+        Authorized = $authorized
+        AttendancePct = $attendancePct
+        Flag = if ($attendancePct -lt 75) { "[!!!] Critical" }
+               elseif ($attendancePct -lt 85) { "[!] Warning" }
+               else { "[OK] Good" }
+    }
+}
+
+# Generate alerts file
+$timestamp = Get-Date -Format "yyyy-MM-dd"
+$alertsFile = "D:\Projects\Project2Jarvis\04_Active_Work\attendance-alerts-$timestamp.md"
+
+$alertsContent = @"
+# [ATTENDANCE] Attendance Monitoring Report
+*Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm")*
+
+## Summary Statistics
+- **Total Students**: $($studentStats.Count)
+- **Critical (<75%)**: $(($studentStats | Where-Object { $_.AttendancePct -lt 75 }).Count)
+- **Warning (75-85%)**: $(($studentStats | Where-Object { $_.AttendancePct -ge 75 -and $_.AttendancePct -lt 85 }).Count)
+- **Good (85%+)**: $(($studentStats | Where-Object { $_.AttendancePct -ge 85 }).Count)
+
+## [!!!] Critical Alerts (<75% Attendance)
+$ANSI_BOLD$ANSI_RED------------------------------------------------------------$ANSI_RESET
+$(foreach ($s in ($studentStats | Where-Object { $_.AttendancePct -lt 75 })) {
+    "$ANSI_RED[!!!] $($s.Student): $($s.AttendancePct)% - $($s.Absent) absences, $($s.Late) lates$ANSI_RESET`nNext Steps: URGENT meeting required, consider intervention strategies"
+})
+
+## [!] Warning Alerts (75-85% Attendance)
+$ANSI_BOLD$ANSI_YELLOW------------------------------------------------------------$ANSI_RESET
+$(foreach ($s in ($studentStats | Where-Object { $_.AttendancePct -ge 75 -and $_.AttendancePct -lt 85 })) {
+    "$ANSI_YELLOW[!] $($s.Student): $($s.AttendancePct)% - $($s.Absent) absences, $($s.Late) lates$ANSI_RESET`nNext Steps: Monitor closely, send attendance letter"
+})
+
+## [OK] Good Attendance (85%+)
+$ANSI_BOLD$ANSI_GREEN------------------------------------------------------------$ANSI_RESET
+$(foreach ($s in ($studentStats | Where-Object { $_.AttendancePct -ge 85 })) {
+    "$ANSI_GREEN[OK] $($s.Student): $($s.AttendancePct)%$ANSI_RESET"
+})
+
+## [CHART] Attendance Trends
+$ANSI_BOLD$ANSI_CYAN------------------------------------------------------------$ANSI_RESET
+```
+Attendance Distribution
+$(foreach ($s in ($studentStats | Sort-Object AttendancePct -Descending)) {
+    $bar = "█" * [math]::Round($s.AttendancePct / 2)
+    $flag = if ($s.AttendancePct -lt 75) { "[!!!]" } elseif ($s.AttendancePct -lt 85) { "[!]" } else { "[OK]" }
+    "$flag $($s.Student.PadRight(20)) $bar $($s.AttendancePct)%"
+})
+```
+
+## [>>] Next Steps for Each Student
+
+### Critical Alerts (Immediate Action Required)
+$(foreach ($s in ($studentStats | Where-Object { $_.AttendancePct -lt 75 })) {
+    "**$($s.Student)** ($($s.AttendancePct)%):
+    1. [PHONE] Call parents/guardians within 24 hours
+    2. [MEETING] Schedule attendance meeting this week
+    3. [PLAN] Create action plan with student
+    4. [REVIEW] Review weekly until above 85%
+    "
+})
+
+### Warning Alerts (Monitor Closely)
+$(foreach ($s in ($studentStats | Where-Object { $_.AttendancePct -ge 75 -and $_.AttendancePct -lt 85 })) {
+    "**$($s.Student)** ($($s.AttendancePct)%):
+    1. [EMAIL] Send attendance concern letter
+    2. [LOG] Log in safeguarding system
+    3. [EYE] Monitor for 2 weeks
+    4. [TARGET] Set target to reach 90%
+    "
+})
+
+### Good Attendance (Keep It Up!)
+$(foreach ($s in ($studentStats | Where-Object { $_.AttendancePct -ge 85 } | Select-Object -First 3)) {
+    "**$($s.Student)** - Recognition for excellent attendance!"
+})
+
+## [CHECK] Action Items for Staff
+- [ ] Contact all Critical Alert parents by end of day
+- [ ] Send Warning Alert letters within 48 hours
+- [ ] Update attendance tracker in MIS
+- [ ] Schedule intervention meetings
+- [ ] Log concerns in safeguarding system
+
+---
+*Report generated by Project2Jarvis Attendance Monitor*
+"@
+
+# Save alerts file
+$alertsContent | Out-File -FilePath $alertsFile -Encoding utf8
+
+# Display summary
+Write-Host "`n$ANSI_BOLD$ANSI_MAGENTA========================================$ANSI_RESET"
+Write-Host "$ANSI_CYAN[ATTENDANCE] MONITORING COMPLETE$ANSI_RESET"
+Write-Host "$ANSI_BOLD$ANSI_MAGENTA========================================$ANSI_RESET"
+Write-Host "$ANSI_GREEN[OK] Alerts saved to:$ANSI_RESET"
+Write-Host "$ANSI_YELLOW$alertsFile$ANSI_RESET"
+Write-Host "`n$ANSI_BOLD[SUMMARY]$ANSI_RESET"
+Write-Host "  Total Students: $($studentStats.Count)"
+Write-Host "  $ANSI_RED[!!!] Critical: $(($studentStats | Where-Object { $_.AttendancePct -lt 75 }).Count)$ANSI_RESET"
+Write-Host "  $ANSI_YELLOW[!] Warning: $(($studentStats | Where-Object { $_.AttendancePct -ge 75 -and $_.AttendancePct -lt 85 }).Count)$ANSI_RESET"
+Write-Host "  $ANSI_GREEN[OK] Good: $(($studentStats | Where-Object { $_.AttendancePct -ge 85 }).Count)$ANSI_RESET"
+Write-Host "$ANSI_BOLD$ANSI_MAGENTA========================================$ANSI_RESET`n"

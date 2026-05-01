@@ -1,7 +1,6 @@
 ---
 description: Orchestrates the council of specialized agents to review and improve code
 mode: primary
-model: anthropic/claude-sonnet-4-5
 temperature: 0.3
 permission:
   edit: ask
@@ -14,10 +13,15 @@ permission:
 ## Memory Protocol
 
 ### Session Start (always do first)
+**Layer 2 - Working Memory:**
 1. Read `MEMORY.md` - working memory with project context
 2. Read `AGENTS.md` - council member roster and their roles
-3. Read `03_Knowledge_Base/decisions-log.md` - recent decisions
-4. Check `04_Active_Work/` for recent session logs
+
+**Layer 3 - Permanent Memory:**
+3. Read `03_Knowledge_Base/decisions-log.md` - recent decisions (ADRs)
+4. Read `03_Knowledge_Base/lessons-learned.md` - accumulated insights
+5. Check `04_Active_Work/` for recent session logs (last 3 sessions)
+6. Read `00_Meta/ARCHITECTURE.md` - system architecture
 
 ### During Task
 1. Select appropriate council members for the task

@@ -122,10 +122,14 @@ Project2Jarvis/ (Obsidian Vault Root = Git Root = OpenCode Working Dir)
 │   │   ├── council-security.md      # Security reviewer (edit:deny)
 │   │   ├── council-performance.md   # Performance reviewer (edit:deny)
 │   │   ├── council-quality.md       # Quality reviewer (edit:deny)
-│   │   └── council-docs.md         # Documentation reviewer (edit:deny)
+│   │   ├── council-docs.md         # Documentation reviewer (edit:deny)
+│   │   ├── ui-ux-pro-max.md        # UI/UX design intelligence (edit:ask)
+│   │   └── personal-development-coach.md # Personal development coach (edit:ask)
 │   ├── skills/                      # Skill definitions
-│   │   └── council/
-│   │       └── SKILL.md             # Council system skill
+│   │   ├── council/
+│   │   │   └── SKILL.md             # Council system skill
+│   │   └── ui-ux-pro-max/         # UI/UX Pro Max skill
+│   │       └── SKILL.md
 │   └── (future) plugins/           # OpenCode plugins (if needed)
 ├── .obsidian/                      # Obsidian configuration
 │   └── (Obsidian auto-generated config)
@@ -179,23 +183,27 @@ Project2Jarvis/ (Obsidian Vault Root = Git Root = OpenCode Working Dir)
 
 #### Primary Agents (Switch with Tab Key)
 
-| Agent | Role | Model | Permissions | Use When |
-|-------|------|-------|-------------|----------|
-| `builder` | Autonomous feature implementation | claude-sonnet-4-5 | **FULL ACCESS** (edit:allow, bash:allow, etc.) | Implementing features, fixing bugs |
-| `researcher` | Autonomous investigation & docs | gpt-5.1-codex | **FULL ACCESS** | Research, documentation, feasibility studies |
-| `maintainer` | Autonomous system maintenance | claude-haiku-4-5 | **FULL ACCESS** | Updates, cleanup, health checks |
-| `council-orchestrator` | Coordinates council reviews | claude-sonnet-4-5 | edit:ask, bash:ask | Multi-agent code reviews |
-| `council-system-architect` | System architecture design | claude-opus-4-5 | edit:ask, bash:ask | Architecture decisions, system design |
+| Agent | Role | Permissions | Use When |
+|-------|------|-------------|----------|
+| `builder` | Autonomous feature implementation | **FULL ACCESS** (edit:allow, bash:allow, etc.) | Implementing features, fixing bugs |
+| `researcher` | Autonomous investigation & docs | **FULL ACCESS** | Research, documentation, feasibility studies |
+| `maintainer` | Autonomous system maintenance | **FULL ACCESS** | Updates, cleanup, health checks |
+| `council-orchestrator` | Coordinates council reviews | edit:ask, bash:ask | Multi-agent code reviews |
+| `council-system-architect` | System architecture design | edit:ask, bash:ask | Architecture decisions, system design |
+| `ui-ux-pro-max` | UI/UX design intelligence (Pro Max) | edit:ask, bash:ask | UI/UX design, components, accessibility |
+| `personal-development-coach` | Personal development coaching | edit:ask, bash:ask | Solihull College PPD coaching |
+| `ui-ux-pro-max` | UI/UX design intelligence (Pro Max) | claude-opus-4-5 | edit:ask, bash:ask | UI/UX design, components, accessibility |
+| `personal-development-coach` | Personal development coaching | claude-sonnet-4-5 | edit:ask, bash:ask | Solihull College PPD coaching |
 
 #### Council Subagents (Invoke with @)
 
-| Agent | Role | Model | Permissions | Use When |
-|-------|------|-------|-------------|----------|
-| `council-architect` | Architecture review | claude-sonnet-4-5 | edit:deny, bash:ask | Reviewing system design |
-| `council-security` | Security assessment | claude-sonnet-4-5 | edit:deny, bash:ask | Security audits, vulnerability scans |
-| `council-performance` | Performance review | claude-sonnet-4-5 | edit:deny, bash:ask | Performance optimization |
-| `council-quality` | Code quality review | claude-haiku-4-5 | edit:deny, bash:deny | Best practices, maintainability |
-| `council-docs` | Documentation review | claude-haiku-4-5 | edit:deny, bash:deny | Documentation completeness |
+| Agent | Role | Permissions | Use When |
+|-------|------|-------------|----------|
+| `council-architect` | Architecture review | edit:deny, bash:ask | Reviewing system design |
+| `council-security` | Security assessment | edit:deny, bash:ask | Security audits, vulnerability scans |
+| `council-performance` | Performance review | edit:deny, bash:ask | Performance optimization |
+| `council-quality` | Code quality review | edit:deny, bash:deny | Best practices, maintainability |
+| `council-docs` | Documentation review | edit:deny, bash:deny | Documentation completeness |
 
 ### Agent Permissions Matrix
 
@@ -206,6 +214,8 @@ Project2Jarvis/ (Obsidian Vault Root = Git Root = OpenCode Working Dir)
 | maintainer | allow | allow | allow | allow | allow | allow | allow |
 | council-orchestrator | allow | ask | ask | allow | deny | ask | ask |
 | council-system-architect | allow | ask | ask | allow | deny | allow | allow |
+| ui-ux-pro-max | allow | ask | ask | allow | deny | allow | allow |
+| personal-development-coach | allow | ask | ask | allow | deny | allow | allow |
 | council-architect | allow | deny | ask | allow | deny | allow | allow |
 | council-security | allow | deny | ask | allow | deny | allow | allow |
 | council-performance | allow | deny | ask | allow | deny | allow | allow |
