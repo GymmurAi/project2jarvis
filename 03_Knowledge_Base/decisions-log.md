@@ -295,3 +295,131 @@ Autonomous agents (builder/researcher/maintainer) have `bash:allow` + `edit:allo
 - **Negative**: [Drawbacks]
 - **Risk**: [Risks and mitigations]
 ```
+---
+
+## ADR-013: Centralize Dependency Matrices in Active Registry
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @council-orchestrator, @plan-agent
+
+### Context
+Dependency matrices (Three.js/R3F/drei versions) duplicated in 3+ files. Violates DRY principle. Updates require changing multiple files.
+
+### Decision
+- Centralize in `03_Knowledge_Base/active-registry.md` under "Verified Dependency Stacks"
+- Remove from `plan-agent.md`, `working-memory.md`, `planning-template.md`
+- Reference via wiki-link: `[[active-registry.md#Verified-Dependency-Stacks]]`
+
+### Consequences
+- **Positive**: Single source of truth, easier updates, DRY compliance
+- **Negative**: Need to update references in multiple files
+- **Risk**: Agents forget to check registry → Mitigation: Add to memory protocol
+
+---
+
+## ADR-014: Registry Update Policy - Plan Agent Edit Allow
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @council-orchestrator, @plan-agent
+
+### Context
+`active-registry.md` needs updates when agents complete tasks. Currently only Maintainer can edit. Plan Agent needs ability to update registry after coordinating tasks.
+
+### Decision
+- Plan Agent: `edit: allow` for `active-registry.md` ONLY
+- All other agents: `edit: deny` for registry (Maintainer only)
+- Documented in `active-registry.md` under "Important Reminders"
+
+### Consequences
+- **Positive**: Plan Agent can track task completion, automated workflow
+- **Negative**: Potential for registry corruption if Plan Agent fails
+- **Risk**: Unauthorized edits → Mitigation: Audit logging (ADR-010)
+
+---
+
+## ADR-015: Add MCP/CLI/API Planning Templates
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @council-orchestrator, @plan-agent
+
+### Context
+Current planning template only covers 3D/UI projects. Need templates for MCP servers, CLI tools, and API endpoints.
+
+### Decision
+- Add MCP Server template to `planning-template.md` (config, testing, documentation)
+- Add CLI Tool template (Commander.js/yargs setup)
+- Add API Endpoint template (REST/GraphQL, authentication)
+- Implement project type detection (auto-select template)
+
+### Consequences
+- **Positive**: Comprehensive coverage, faster planning for diverse projects
+- **Negative**: Larger template file, more complexity
+- **Risk**: Template bloat → Mitigation: Modular templates (ADR-017)
+
+---
+
+## ADR-016: State Persistence + Fallback Mechanism
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @council-orchestrator, @plan-agent
+
+### Context
+Plan Agent is single point of failure. No crash recovery. No fallback if agent becomes unresponsive. Risk of infinite recursion (spawning itself).
+
+### Decision
+- **State Persistence**: Save to `04_Active_Work/plan-{idea-name}/state.json` after each phase
+- **Resume Capability**: Check for existing state at session start
+- **Fallback Chain**: plan-agent → council-orchestrator → researcher
+- **Health Check**: Escalate if no response in 5 minutes
+- **Circular Guard**: NEVER spawn `/task plan-agent` (prevents recursion)
+- **Concurrency Control**: Max 3 agents simultaneously, UUID-based plan IDs
+
+### Consequences
+- **Positive**: Crash recovery, no single point of failure, prevents recursion
+- **Negative**: More complex implementation, state file management
+- **Risk**: State file corruption → Mitigation: JSON schema validation
+
+---
+
+## ADR-017: Lite Plan Template for Simple Tasks
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @council-orchestrator, @plan-agent
+
+### Context
+Current template is 310 lines - too verbose for simple tasks (bug fixes, small features). Need streamlined version.
+
+### Decision
+- Create "Lite Template" (50-75 lines) for simple tasks
+- Include: Business Case, Risk Assessment, 3-Phase Plan, Success Criteria
+- Keep full template for complex projects (3D, MCP, multi-agent)
+- Auto-select based on task complexity assessment
+
+### Consequences
+- **Positive**: Faster planning for simple tasks, reduced context usage
+- **Negative**: Two templates to maintain
+- **Risk**: Wrong template selection → Mitigation: Plan Agent judgment
+
+---
+
+## ADR-018: Standardize Memory Protocol Order
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @council-orchestrator, @plan-agent
+
+### Context
+Each agent reads memory files in different order. No standardization. Causes confusion and missed context.
+
+### Decision
+Standardize order across ALL agents:
+1. `AGENTS.md` - Project rules and agent roster
+2. `MEMORY.md` - Project overview
+3. `decisions-log.md` - Recent ADRs
+4. `lessons-learned.md` - Past insights
+5. `04_Active_Work/` - Recent session logs
+6. `ARCHITECTURE.md` - System architecture
+
+### Consequences
+- **Positive**: Consistent context, easier cross-agent coordination
+- **Negative**: Need to update all agent definitions
+- **Risk**: Agents forget new order → Mitigation: Add to agent templates

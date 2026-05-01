@@ -45,27 +45,11 @@
 - Past failure: Multiple fixes applied simultaneously → couldn't identify root cause
 
 ## Dependency Compatibility Matrices (CRITICAL)
-
-### 3D React Projects (Next.js + Three.js)
-```
-Stack A (Recommended - Stable):
-- three: ^0.170.0
-- @react-three/fiber: ^8.17.0
-- @react-three/drei: ^9.117.0
-- framer-motion: ^11.15.0
-- react: ^18.3.1
-- next: ^14.2.35
-
-Stack B (Legacy - If you must):
-- three: ^0.160.0
-- @react-three/fiber: ^8.15.0
-- @react-three/drei: ^9.92.0
-- framer-motion: ^10.16.0
-- react: ^18.2.0
-- next: ^14.0.0
-```
-
-**Check command**: `npm ls three @react-three/fiber @react-three/drei framer-motion`
+ 
+**Reference ONLY**: `[[03_Knowledge_Base/active-registry.md#Verified-Dependency-Stacks]]` (ADR-013)
+ 
+- Check command: `npm ls three @react-three/fiber @react-three/drei framer-motion`
+- **NEVER duplicate matrices** - centralized in active-registry.md (ADR-013)
 
 ## Agent Coordination Map
 

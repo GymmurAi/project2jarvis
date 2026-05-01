@@ -94,16 +94,9 @@
 - [ ] Document planned versions in this plan
 
 ### For 3D Projects ONLY:
-```
-Stack A (Recommended - Stable):
-- three: ^0.170.0
-- @react-three/fiber: ^8.17.0
-- @react-three/drei: ^9.117.0
-- framer-motion: ^11.15.0
-- react: ^18.3.1
-```
-
-**Reference**: See `[[03_Knowledge_Base/active-registry.md#Verified-Dependency-Stacks]]` for full matrices.
+**Reference**: See `[[03_Knowledge_Base/active-registry.md#Verified-Dependency-Stacks]]` (ADR-013).
+**Check command**: `npm ls three @react-three/fiber @react-three/drei framer-motion`
+**DO NOT duplicate** - matrices centralized in active-registry.md
 
 ---
 

@@ -20,18 +20,21 @@ permission:
 ## Memory Protocol
 
 ### Session Start (always do first)
-**Layer 2 - Working Memory:**
-1. Read `01_Agents/plan-agent/working-memory.md` - my per-agent working memory
-2. Read `03_Knowledge_Base/active-registry.md` - cross-agent registry (read-only)
-3. Read `AGENTS.md` - project rules and agent roster
+**Layer1 - Project Rules:**
+1. Read `AGENTS.md` - project rules and agent roster
+2. Read `MEMORY.md` - project overview
+
+**Layer2 - Working Memory:**
+3. Read `01_Agents/plan-agent/working-memory.md` - my per-agent working memory
+4. Read `03_Knowledge_Base/active-registry.md` - cross-agent registry (read-only)
 
 **Layer 3 - Permanent Memory:**
-4. Read `03_Knowledge_Base/decisions-log.md` - recent architecture decisions
-5. Read `03_Knowledge_Base/lessons-learned.md` - past research insights (PRINCE2 Principle 2: Learn from Experience)
-6. Read `03_Knowledge_Base/agent-memory-solutions.md` - previous research
-7. Check `04_Active_Work/` for recent session logs
-8. Read `00_Meta/ARCHITECTURE.md` - system architecture
-9. **Read `03_Knowledge_Base/ai-saas-landing-postmortem.md`** - CRITICAL: Past failure analysis
+5. Read `03_Knowledge_Base/decisions-log.md` - recent architecture decisions
+6. Read `03_Knowledge_Base/lessons-learned.md` - past research insights (PRINCE2 Principle 2: Learn from Experience)
+7. Read `03_Knowledge_Base/agent-memory-solutions.md` - previous research
+8. Check `04_Active_Work/` for recent session logs
+9. Read `00_Meta/ARCHITECTURE.md` - system architecture
+10. **Read `03_Knowledge_Base/ai-saas-landing-postmortem.md`** - CRITICAL: Past failure analysis
 
 ### During Task
 1. Keep notes of analysis and planning decisions
@@ -363,6 +366,60 @@ plan the integration steps, coordinate with builder.
 3. Create plan with steps: research → config → test → document
 4. Delegate to appropriate agents
 5. Monitor execution
+
+## State Persistence (ADR-016)
+
+### Automatic State Saving
+After completing each phase, save state to `04_Active_Work/plan-{idea-name}/state.json`:
+```json
+{
+  "schema_version": "1.0",
+  "plan_id": "{UUID-generated-at-start}",
+  "current_phase": "Phase 3 - Create Plan",
+  "phase_status": "in_progress",
+  "delegated_agents": ["builder", "researcher"],
+  "verification_status": "pending",
+  "timestamp": "2026-05-01T18:00:00Z",
+  "resume_point": "Phase 3, step 2"
+}
+```
+
+### Resume Capability
+At session start, check for existing state:
+1. Read `04_Active_Work/` for `plan-*/state.json` files
+2. If found, ask user: "Found incomplete plan: {idea-name}. Resume?"
+3. If yes, read `state.json` and continue from `resume_point`
+
+---
+
+## Fallback Mechanism (ADR-016)
+
+### Health Check & Escalation
+If Plan Agent fails to respond within 5 minutes:
+1. **First fallback**: Escalate to `council-orchestrator`
+2. **Second fallback**: Escalate to `researcher`
+3. **Last resort**: User manual intervention
+
+### Single Point of Failure Mitigation
+- Plan Agent is MANDATORY gatekeeper but has fallback chain
+- Health check: Monitor response time, escalate if >5 min
+- Fallback agents have read-only access to `planning-template.md`
+
+---
+
+## Circular Guard (ADR-016)
+
+### NEVER Spawn Plan Agent
+- **Rule**: Plan Agent MUST NEVER spawn `/task plan-agent`
+- **Reason**: Prevents infinite recursion (circular dependency)
+- **Exception**: NONE - this rule is absolute
+
+### Concurrency Control
+- **Max 3 agents** simultaneously (prevents resource exhaustion)
+- **UUID-based plan IDs**: Each plan gets unique ID to prevent conflicts
+- **Check active plans**: Read `04_Active_Work/` before spawning new plan
+
+---
 
 ## Important Notes
 
