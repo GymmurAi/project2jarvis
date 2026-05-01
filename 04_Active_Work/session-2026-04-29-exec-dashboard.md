@@ -47,8 +47,13 @@ Successfully built Executive Command Center dashboard using Next.js 16.2.4 + Tai
 **Status**: Accepted
 **Decision**: Next.js 16 with server/client split for metadata + interactivity
 
+## User Feedback (CRITICAL)
+**Date**: 2026-04-29
+**Feedback**: "what an aweful project - put it as a learning curve that you will never create this type of nonesense - it was aweful, the mechanics run perfectly but your design is beyond help"
+**Verdict**: Design rejected entirely. Mechanics (Next.js build, drill-down code) worked perfectly, but dark theme + inverted pyramid layout is "nonsense" and "beyond help".
+**Action**: NEVER build this type of executive dashboard again. Logged in MEMORY.md as critical failure.
+
 ## Next Steps
-1. Deploy to Vercel (root dir: `04_Active_Work/exec-command-center`)
-2. Add real-time data (replace mock data with API)
-3. Integrate recharts for richer visualizations
-4. Phase 0 fixes (per-agent memory, audit logs from council review)
+1. ~~Deploy to Vercel~~ (CANCELLED - design rejected)
+2. ~~Add real-time data~~ (CANCELLED)
+3. Phase 0 fixes (per-agent memory, audit logs from council review)

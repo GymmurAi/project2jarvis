@@ -93,8 +93,8 @@
 - **Color as SIGNAL**: Gold for revenue ONLY, Teal for data viz, Navy for authority
 - **Council agents**: @council-architect, @council-quality, @council-security (use for reviews)
 - All API keys in Windows Credential Manager (never in repo)
-- **Dashboard theme**: Dark (`#0F172A`) for executive calm, Sky Blue (`#0EA5E9`) primary
 - **Landing theme**: Light with Sky Blue/Orange, Plus Jakarta Sans (Tailwind CDN v4)
+- **CRITICAL FAILURE**: Executive Command Center (dark #0F172A, inverted pyramid) is REJECTED. User feedback: "design is beyond help, awful". NEVER build this type of dashboard again. Mechanics (Next.js, drill-down) worked, design is nonsense.
 
 ## Quick Reference
 - **Start session**: Read AGENTS.md → MEMORY.md → decisions-log.md
