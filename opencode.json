@@ -5,6 +5,11 @@
       "type": "local",
       "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "D:/Projects/Project2Jarvis"],
       "enabled": true
+    },
+    "crawl4ai": {
+      "type": "local",
+      "command": ["python", "D:/Projects/Project2Jarvis/.opencode/scripts/crawl4ai_mcp.py"],
+      "enabled": true
     }
   },
   "permission": {

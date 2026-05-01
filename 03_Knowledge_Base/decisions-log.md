@@ -90,6 +90,46 @@ Previous agencies broke due to databases, hidden state, or unpublished changes.
 
 ---
 
+## ADR-012: Create Plan Agent with PRINCE2 Integration
+
+**Status**: Accepted  
+**Date**: 2026-05-01  
+**Deciders**: @researcher, @council-orchestrator, @council-architect, @council-quality
+
+### Context
+Project2Jarvis suffered cascading failures (Three.js dependency hell, Executive Command Center design rejection) because ideas went directly to Builder without planning. The Jeomon/Plan-Agent-with-Meta-Agent GitHub repo (14 stars) provided inspiration, but past failure prevention was missing.
+
+### Decision
+Create a **Plan Agent** (`.opencode/agents/plan-agent.md`) that serves as **MANDATORY first step** for ALL new ideas. Key features:
+
+1. **6-Phase Process**: Analyze → Assess Risks → Create Plan → Delegate → Monitor → Verify
+2. **PRINCE2 Integration** (P0 elements):
+   - Principle 1: Continued Business Justification (Business Case in Phase 1)
+   - Principle 2: Learn from Experience (read lessons-learned.md)
+   - Principle 5: Manage by Exception (tolerances table, escalation)
+3. **Failure Prevention Rules**:
+   - No Direct Execution Rule (plan only, don't build)
+   - Dependency Check Rule (mandatory `npm ls` before/after)
+   - Design Validation Rule (mockup first, user approval)
+   - One Change at a Time Rule (atomic steps)
+4. **Files Created**:
+   - `.opencode/agents/plan-agent.md` (agent definition)
+   - `01_Agents/plan-agent/working-memory.md` (with dependency matrices)
+   - `04_Active_Work/planning-template.md` (reusable template with PRINCE2 elements)
+   - `03_Knowledge_Base/plan-agent-research.md` (research document)
+   - `03_Knowledge_Base/prince2-integration-plan-agent.md` (PRINCE2 research)
+5. **Project Updates**:
+   - `AGENTS.md` - Added Plan Agent as MANDATORY first step
+   - `03_Knowledge_Base/active-registry.md` - Updated (20 agents total)
+   - `01_Agents/researcher/working-memory.md` - Added research to recent work
+
+### Consequences
+- **Positive**: Prevents dependency hell (Three.js crash), design rejections (Exec Command Center), provides universal planning for ALL project types
+- **Negative**: Adds complexity (20th agent), requires P0 changes (registry access, state persistence, centralized matrices)
+- **Risk**: Single point of failure → Mitigation: ADR-016 fallback mechanism
+
+---
+
 ## Template for New ADRs
 ```
 ## ADR-XXX: [Title]

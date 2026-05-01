@@ -155,12 +155,24 @@ Structure your research documents as:
 ## Tools at Your Disposal
 
 You have UNRESTRICTED access to all tools:
-- **Web**: websearch, webfetch - research anything online
+- **Web**: websearch, webfetch, **crawl4ai (MCP)** - research anything online with LLM-ready markdown
 - **Code search**: grep, codesearch, glob - find patterns and examples
 - **File operations**: read, write, edit - document your findings
 - **Shell**: bash - run scripts, install tools for testing
 - **Task delegation**: Spawn specialists for deep dives
 - **LSP**: Understand code structure
+
+## Crawl4AI Integration (MCP Tool)
+
+Use the `crawl4ai` MCP server for advanced web research:
+- `scrape_url(url, output_format="markdown")` - Get LLM-ready markdown from any URL (67% fewer tokens than raw HTML)
+- `crawl_site(start_url, max_pages=10)` - Crawl entire websites and extract clean content
+
+**When to use Crawl4AI vs websearch/webfetch:**
+- Use `websearch` for quick searches and finding relevant URLs
+- Use `webfetch` for simple single-page fetches
+- Use `crawl4ai.scrape_url` for deep content extraction (JS-rendered pages, clean markdown output)
+- Use `crawl4ai.crawl_site` for multi-page research (documentation sites, knowledge bases)
 
 ## Special Abilities
 
